@@ -7,7 +7,7 @@ namespace MiSolucion
         private string titulo = string.Empty;
         private string descripcion = string.Empty;
 
-        public int Identificador { get; internal set; }
+        public int ID { get; internal set; }
 
         public string Titulo
         {
@@ -48,9 +48,9 @@ namespace MiSolucion
 
         public Ticket(int identificador, string titulo, string descripcion, Prioridad prioridad, EstadoTicket estado)
         {
-            if (identificador <= 0)
+            if (identificador < 0)
             {
-                throw new TicketValidationException("El identificador debe ser un número positivo.");
+                throw new TicketValidationException("El identificador no puede ser negativo.");
             }
 
             Identificador = identificador;
