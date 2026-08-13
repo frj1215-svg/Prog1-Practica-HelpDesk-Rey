@@ -7,7 +7,7 @@ namespace MiSolucion
         private string titulo = string.Empty;
         private string descripcion = string.Empty;
 
-        public int ID { get; internal set; }
+        public int Id { get; set; }
 
         public string Titulo
         {
@@ -43,8 +43,11 @@ namespace MiSolucion
         }
 
         public Prioridad Prioridad { get; set; }
-        public EstadoTicket Estado { get; private set; }
-        public DateTime FechaCreacion { get; private set; }
+        public EstadoTicket Estado { get; set; }
+        public DateTime FechaCreacion { get; set; }
+
+        //constructor por defecto para JSON deserialization
+        public Ticket() { }
 
         public Ticket(int identificador, string titulo, string descripcion, Prioridad prioridad, EstadoTicket estado)
         {
@@ -53,7 +56,7 @@ namespace MiSolucion
                 throw new TicketValidationException("El identificador no puede ser negativo.");
             }
 
-            Identificador = identificador;
+            Id = identificador;
             Titulo = titulo;
             Descripcion = descripcion;
             Prioridad = prioridad;
@@ -64,7 +67,7 @@ namespace MiSolucion
             }
 
             Estado = EstadoTicket.Abierto;
-            FechaCreacion = DateTime.Now;
+            FechaCreacion = DateTime.Now;   
         }
 
         public void CambiarEstado(EstadoTicket nuevoEstado)
