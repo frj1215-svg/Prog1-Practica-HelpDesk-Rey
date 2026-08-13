@@ -28,14 +28,37 @@ namespace MiSolucion
             return ticket;
         }
 
-        //metodo para crear un ticket
-        public Ticket CrearTicket(string titulo, string descripcion, Prioridad prioridad)
+        
+        public Ticket Crear(string titulo, string descripcion, Prioridad prioridad)
         {
-            var nuevoTicket = new Ticket(0, titulo, descripcion, prioridad, EstadoTicket.Abierto);
+            if (string.IsNullOrWhiteSpace(titulo) || titulo.Length > 100)
+                throw new ArgumentException("El título es obligatorio y no puede superar los 100 caracteres.");
+            
+            if (string.IsNullOrWhiteSpace(descripcion))
+                throw new ArgumentException("La descripción es obligatoria.");
 
-            _repositorio.AgregarTicket(nuevoTicket);
+            var tickets = _repositorio.LeerTodos();
+            
+            int nuevoId = 1;
+            if (tickets.Any())
+            {
+                nuevoId = tickets.Max(t => t.Id) + 1;
+            }
+
+            var nuevoTicket = new Ticket
+            {
+                Id = nuevoId,
+                Titulo = titulo,
+                Descripcion = descripcion,
+                Prioridad = prioridad,
+                Estado = EstadoTicket.Abierto, // Todo ticket nace Abierto[cite: 2]
+                FechaCreacion = DateTime.Now   // Se asigna automáticamente[cite: 2]
+            };
+
+            tickets.Add(nuevoTicket);
+            _repositorio.GuardarTodos(tickets); // Guardamos la lista completa[cite: 2]
 
             return nuevoTicket;
-        }       
+        }      
     }
 }
